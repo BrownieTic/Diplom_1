@@ -1,5 +1,6 @@
 import pytest
 
+from praktikum.database import Database
 from praktikum.burger import Burger
 from praktikum.bun import Bun
 from praktikum.ingredient import Ingredient
@@ -42,7 +43,6 @@ def create_full_burger(create_bun, create_two_ingredients_for_burger):
     return create_two_ingredients_for_burger
 
 @pytest.fixture(scope="function")
-def mock_bun_and_ingredient(burger):
-    bun = Mock()
-
-    
+def database():
+    db = Database()
+    return db
