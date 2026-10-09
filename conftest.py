@@ -6,9 +6,6 @@ from praktikum.bun import Bun
 from praktikum.ingredient import Ingredient
 import praktikum.ingredient_types as IngredientType
 
-from unittest.mock import patch
-from unittest.mock import Mock
-
 @pytest.fixture(scope="function")
 def burger():
     burger = Burger()
