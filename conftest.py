@@ -43,3 +43,8 @@ def create_full_burger(create_bun, create_two_ingredients_for_burger):
 def database():
     db = Database()
     return db
+
+@pytest.fixture(scope="function")
+def data_available_ingredients(database):
+    ingredients = database.available_ingredients()
+    return ingredients

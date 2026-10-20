@@ -1,68 +1,136 @@
+import pytest
 import praktikum.ingredient_types as IngredientType
 
 class TestDatabase:
-    def test_init_create_3_correct_buns(self, database):
+    @pytest.mark.parametrize("num, name", [
+        (0, 'black bun'), 
+        (1, 'white bun'), 
+        (2, 'red bun')])
+    def test_init_create_correct_bun_name(self, database, num, name):
+        assert database.buns[num].get_name() == name
+
+    @pytest.mark.parametrize("num, price", [
+        (0, 100), 
+        (1, 200), 
+        (2, 300)])
+    def test_init_create_correct_bun_price(self, database, num, price):
+        assert database.buns[num].get_price() == price
+
+    def test_init_create_correct_amount_buns_3(self, database):      
         assert len(database.buns) == 3
-        assert database.buns[0].get_name() == 'black bun'
-        assert database.buns[0].get_price() == 100
-        assert database.buns[1].get_name() == 'white bun'
-        assert database.buns[1].get_price() == 200
-        assert database.buns[2].get_name() == 'red bun'
-        assert database.buns[2].get_price() == 300
 
     def test_init_create_correct_amount_ingredients_6(self, database):
         assert len(database.ingredients) == 6
 
-    def test_init_create_3_correct_sauces(self, database):
-        assert database.ingredients[0].get_type() == IngredientType.INGREDIENT_TYPE_SAUCE
-        assert database.ingredients[0].get_name() == 'hot sauce'
-        assert database.ingredients[0].get_price() == 100
-        assert database.ingredients[1].get_type() == IngredientType.INGREDIENT_TYPE_SAUCE
-        assert database.ingredients[1].get_name() == 'sour cream'
-        assert database.ingredients[1].get_price() == 200
-        assert database.ingredients[2].get_type() == IngredientType.INGREDIENT_TYPE_SAUCE
-        assert database.ingredients[2].get_name() == 'chili sauce'
-        assert database.ingredients[2].get_price() == 300
+    @pytest.mark.parametrize("num", [
+        (0), 
+        (1), 
+        (2)])
+    def test_init_create_3_correct_type_sauces(self, database, num):
+        assert database.ingredients[num].get_type() == IngredientType.INGREDIENT_TYPE_SAUCE
 
-    def test_init_create_3_correct_fillings(self, database):
-        assert database.ingredients[3].get_type() == IngredientType.INGREDIENT_TYPE_FILLING
-        assert database.ingredients[3].get_name() == 'cutlet'
-        assert database.ingredients[3].get_price() == 100
-        assert database.ingredients[4].get_type() == IngredientType.INGREDIENT_TYPE_FILLING
-        assert database.ingredients[4].get_name() == 'dinosaur'
-        assert database.ingredients[4].get_price() == 200
-        assert database.ingredients[5].get_type() == IngredientType.INGREDIENT_TYPE_FILLING
-        assert database.ingredients[5].get_name() == 'sausage'
-        assert database.ingredients[5].get_price() == 300
+    @pytest.mark.parametrize("num, name", [
+        (0, 'hot sauce'), 
+        (1, 'sour cream'), 
+        (2, 'chili sauce')])
+    def test_init_create_3_correct_name_sauces(self, database, num, name):
+        assert database.ingredients[num].get_name() == name
 
-    def test_available_buns_get_correct_list_with_buns(self, database):
+    @pytest.mark.parametrize("num, price", [
+        (0, 100), 
+        (1, 200), 
+        (2, 300)])
+    def test_init_create_3_correct_price_sauces(self, database, num, price):
+        assert database.ingredients[num].get_price() == price
+
+    @pytest.mark.parametrize("num", [
+        (3), 
+        (4), 
+        (5)])
+    def test_init_create_3_correct_fillings_type(self, database, num):
+        assert database.ingredients[num].get_type() == IngredientType.INGREDIENT_TYPE_FILLING
+
+    @pytest.mark.parametrize("num, name", [
+        (3, 'cutlet'), 
+        (4, 'dinosaur'), 
+        (5, 'sausage')])
+    def test_init_create_3_correct_fillings_name(self, database, num, name):
+        assert database.ingredients[num].get_name() == name
+
+    @pytest.mark.parametrize("num, price", [
+        (3, 100), 
+        (4, 200), 
+        (5, 300)])
+    def test_init_create_3_correct_fillings_price(self, database, num, price):
+        assert database.ingredients[num].get_price() == price
+
+    def test_available_buns_returns_correct_list_len(self, database):
         buns = database.available_buns()
         assert len(buns) == 3
-        assert buns[0].get_name() == 'black bun'
-        assert buns[0].get_price() == 100
-        assert buns[1].get_name() == 'white bun'
-        assert buns[1].get_price() == 200
-        assert buns[2].get_name() == 'red bun'
-        assert buns[2].get_price() == 300
 
-    def test_available_ingredients_get_correct_list_with_ingredients(self, database):
-        ingredients = database.available_ingredients()
-        assert len(ingredients) == 6
-        assert ingredients[0].get_type() == IngredientType.INGREDIENT_TYPE_SAUCE
-        assert ingredients[0].get_name() == 'hot sauce'
-        assert ingredients[0].get_price() == 100
-        assert ingredients[1].get_type() == IngredientType.INGREDIENT_TYPE_SAUCE
-        assert ingredients[1].get_name() == 'sour cream'
-        assert ingredients[1].get_price() == 200
-        assert ingredients[2].get_type() == IngredientType.INGREDIENT_TYPE_SAUCE
-        assert ingredients[2].get_name() == 'chili sauce'
-        assert ingredients[2].get_price() == 300
-        assert ingredients[3].get_type() == IngredientType.INGREDIENT_TYPE_FILLING
-        assert ingredients[3].get_name() == 'cutlet'
-        assert ingredients[3].get_price() == 100
-        assert ingredients[4].get_type() == IngredientType.INGREDIENT_TYPE_FILLING
-        assert ingredients[4].get_name() == 'dinosaur'
-        assert ingredients[4].get_price() == 200
-        assert ingredients[5].get_type() == IngredientType.INGREDIENT_TYPE_FILLING
-        assert ingredients[5].get_name() == 'sausage'
-        assert ingredients[5].get_price() == 300
+    @pytest.mark.parametrize('num, name',[
+            (0, 'black bun'),
+            (1, 'white bun'),
+            (2, 'red bun')])
+    def test_available_buns_returns_correct_name(self, database, num, name):
+        buns = database.available_buns()
+        assert buns[num].get_name() == name
+
+    @pytest.mark.parametrize('num, price',[
+            (0, 100),
+            (1, 200),
+            (2, 300)])
+    def test_available_buns_returns_correct_prices(self, database, num, price):
+        buns = database.available_buns()
+        assert buns[num].get_price() == price
+
+    def test_available_ingredients_get_correct_len_6(self, data_available_ingredients):
+        assert len(data_available_ingredients) == 6
+
+    @pytest.mark.parametrize("num", [
+        (0),
+        (1),
+        (2)
+    ])
+    def test_available_ingredients_get_correct_list_with_type_sauces(self, data_available_ingredients, num):
+        assert data_available_ingredients[num].get_type() == IngredientType.INGREDIENT_TYPE_SAUCE
+
+    @pytest.mark.parametrize("num, name", [
+        (0, 'hot sauce'),
+        (1, 'sour cream'),
+        (2, 'chili sauce')
+    ])
+    def test_available_ingredients_get_correct_list_with_name_sauces(self, data_available_ingredients, num, name):
+        assert data_available_ingredients[num].get_name() == name
+
+    @pytest.mark.parametrize("num, price", [
+        (0, 100),
+        (1, 200),
+        (2, 300)
+    ])
+    def test_available_ingredients_get_correct_list_with_price_sauces(self, data_available_ingredients, num, price):
+        assert data_available_ingredients[num].get_price() == price
+
+    @pytest.mark.parametrize("num", [
+        (3),
+        (4),
+        (5)
+    ])
+    def test_available_ingredients_get_correct_list_with_type_fillings(self, data_available_ingredients, num):
+        assert data_available_ingredients[num].get_type() == IngredientType.INGREDIENT_TYPE_FILLING
+
+    @pytest.mark.parametrize("num, name", [
+        (3, 'cutlet'),
+        (4, 'dinosaur'),
+        (5, 'sausage')
+    ])
+    def test_available_ingredients_get_correct_list_with_name_fillings(self, data_available_ingredients, num, name):
+        assert data_available_ingredients[num].get_name() == name
+
+    @pytest.mark.parametrize("num, price", [
+        (3, 100),
+        (4, 200),
+        (5, 300)
+    ])
+    def test_available_ingredients_get_correct_list_with_price_fillings(self, data_available_ingredients, num, price):
+        assert data_available_ingredients[num].get_price() == price        

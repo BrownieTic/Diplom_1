@@ -5,28 +5,45 @@ import praktikum.ingredient_types as IngredientType
 from praktikum.bun import Bun
 
 class TestBurger:
-    def test_set_buns_set_price_and_name_for_bun(self, burger, create_bun):
+    
+    def test_set_buns_sets_price(self, burger, create_bun):
         burger.set_buns(create_bun)
         assert burger.bun.price == 100
+
+
+    def test_set_buns_sets_name(self, burger, create_bun):
+        burger.set_buns(create_bun)
         assert burger.bun.name == 'black bun'
 
-    def test_set_buns_change_bun(self, create_bun_for_burger):
+    def test_set_buns_change_bun_name(self, create_bun_for_burger):
+        bun = Bun('sweet bun', 1)
+        create_bun_for_burger.set_buns(bun)
+        assert create_bun_for_burger.bun.name == 'sweet bun'
+
+    def test_set_buns_change_bun_price(self, create_bun_for_burger):
         bun = Bun('sweet bun', 1)
         create_bun_for_burger.set_buns(bun)
         assert create_bun_for_burger.bun.price == 1
-        assert create_bun_for_burger.bun.name == 'sweet bun'
 
-    def test_add_ingredient_add_one_ingredient_in_list(self, burger, create_one_ingredient):
+    @pytest.mark.parametrize('attribute, expected',[
+        ('type', IngredientType.INGREDIENT_TYPE_FILLING),
+        ('name', 'cutlet'),
+        ('price', 100)])
+    def test_add_ingredient_add_one_attribute_ingredient_in_list(self, burger, create_one_ingredient, attribute, expected):
         burger.add_ingredient(create_one_ingredient)
-        assert burger.ingredients[0].type == IngredientType.INGREDIENT_TYPE_FILLING
-        assert burger.ingredients[0].name == 'cutlet'
-        assert burger.ingredients[0].price == 100
-      
-    def test_remove_ingredient_remove_correct_ingredient(self, create_two_ingredients_for_burger):
+        assert getattr(burger.ingredients[0], attribute) == expected
+
+    def test_remove_ingredient_remove_correct_ingredient_name(self, create_two_ingredients_for_burger):
         create_two_ingredients_for_burger.remove_ingredient(0)
         assert create_two_ingredients_for_burger.ingredients[0].name == 'hot sauce'
+
+    def test_remove_ingredient_remove_correct_ingredient_price(self, create_two_ingredients_for_burger):
+        create_two_ingredients_for_burger.remove_ingredient(0)
         assert create_two_ingredients_for_burger.ingredients[0].price == 200
-        assert len(create_two_ingredients_for_burger.ingredients) == 1
+
+    def test_remove_ingredient_after_remove_correct_len(self, create_two_ingredients_for_burger):
+        create_two_ingredients_for_burger.remove_ingredient(0)
+        assert len(create_two_ingredients_for_burger.ingredients) == 1  
 
     def test_remove_ingredient_minus_1_in_len(self, create_two_ingredients_for_burger):
         create_two_ingredients_for_burger.remove_ingredient(0)
