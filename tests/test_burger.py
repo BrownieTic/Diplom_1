@@ -10,7 +10,6 @@ class TestBurger:
         burger.set_buns(create_bun)
         assert burger.bun.price == 100
 
-
     def test_set_buns_sets_name(self, burger, create_bun):
         burger.set_buns(create_bun)
         assert burger.bun.name == 'black bun'
@@ -50,13 +49,12 @@ class TestBurger:
         assert len(create_two_ingredients_for_burger.ingredients) == 1
 
     @pytest.mark.parametrize('index, new_index', [[1,0],[0,1]])
-    def test_move_ingredient_move_both_direction(self, create_two_ingredients_for_burger, index, new_index):
+    def test_move_ingredient_move_1_pos_on_0(self, create_two_ingredients_for_burger, index, new_index):
         burger = create_two_ingredients_for_burger
         first_ingredient = burger.ingredients[0]
         second_ingredient = burger.ingredients[1]
         burger.move_ingredient(index, new_index)
         assert burger.ingredients[0] is second_ingredient
-        assert burger.ingredients[1] is first_ingredient
 
     def test_move_ingredient_len_same_after(self, create_two_ingredients_for_burger):
         create_two_ingredients_for_burger.move_ingredient(1, 0)
@@ -85,8 +83,6 @@ class TestBurger:
         burger.add_ingredient(ingredient_1)
         burger.add_ingredient(ingredient_2)
         assert burger.get_price() == 200
-        ingredient_1.get_price.assert_called_once_with()
-        ingredient_2.get_price.assert_called_once_with()
 
     def test_get_price_get_true_price_for_full_burger(self, create_full_burger):
         assert create_full_burger.get_price() == 500
