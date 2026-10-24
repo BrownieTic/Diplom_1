@@ -51,7 +51,6 @@ class TestBurger:
     @pytest.mark.parametrize('index, new_index', [[1,0],[0,1]])
     def test_move_ingredient_move_1_pos_on_0(self, create_two_ingredients_for_burger, index, new_index):
         burger = create_two_ingredients_for_burger
-        first_ingredient = burger.ingredients[0]
         second_ingredient = burger.ingredients[1]
         burger.move_ingredient(index, new_index)
         assert burger.ingredients[0] is second_ingredient
